@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { removeItem, updateQuantity } from './CartSlice';
 import './CartItem.css';
 
-const CartItem = ({ onContinueShopping }) => {
+const CartItem = ({ onContinueShopping, addedToCart, setAddedToCart }) => {
   const cart = useSelector(state => state.cart.items);
   const dispatch = useDispatch();
 
@@ -21,11 +21,19 @@ const CartItem = ({ onContinueShopping }) => {
   };
 
   const handleDecrement = (item) => {
-    // TODO: Prevent decrementing below 1
-    dispatch(updateQuantity({name: item.name, quantity: item.quantity - 1}));
+    if (item.quantity > 1) {
+      dispatch(updateQuantity({name: item.name, quantity: item.quantity - 1}));
+    } else {
+      console.info("Item quantity is 1, decrement cancelled");
+    }
   };
 
   const handleRemove = (item) => {
+    setAddedToCart((prev) => {
+      const newCart = {...prev};
+      delete newCart[item.name];
+      return newCart
+    })
     dispatch(removeItem(item.name));
   };
 
