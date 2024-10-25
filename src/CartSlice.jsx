@@ -27,7 +27,6 @@ export const CartSlice = createSlice({
       // extract item's name and amount from action.payload
       // look for item in state.items to match extracted name
       // update item's quantity to new amount provided in payload
-      console.log(action.payload);
       const {name, quantity} = action.payload;
       const itemToUpdate = state.items.find(item => item.name === name);
       if (itemToUpdate) {
